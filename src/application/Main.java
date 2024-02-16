@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import application.views.*;
+import application.gui.views.*;
 
 
 public class Main extends Application
