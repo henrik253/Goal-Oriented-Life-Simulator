@@ -10,6 +10,8 @@ public interface GUIInterface {
 	public void removeGameObject(Vector2D position);
 
 	public void startGame();
+	
+	public void update(); 
 
 	public double[] getGameCharacterInformation(Vector2D position);
 

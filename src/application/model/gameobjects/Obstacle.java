@@ -11,7 +11,7 @@ public class Obstacle implements GameObject {
 	}
 
 	public Vector2D getPosition() {
-		return null;
+		return position; 
 	}
 
 	@Override

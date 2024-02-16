@@ -34,14 +34,14 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 	private Vector2D position;
 
 	private final GameField gameField = GameField.getGameField();
-	
+
 	private final ActionHandler actionHandler = ActionHandler.getActionHandler();
-	
+
 	public GameCharacter(Vector2D position) {
 		this.position = position;
 		updateOverallSatisfaction();
 	}
-	
+
 	public void updateOverallSatisfaction() {
 		overallSatisfaction = calculateOverallSatisfaction();
 	}
@@ -51,12 +51,18 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 				+ intellectuallySatisfaction * intellectuallyWeight + hungerSatisfaction * hungerWeight
 				+ sleepSatisfaction * sleepWeight) / SATISFACTIONS;
 	}
-	
+
 	@Override
 	public void start() {
-		
+
 	}
-	
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+
+	}
+
 	@Override
 	public Vector2D getPosition() {
 		return position;
@@ -66,12 +72,12 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 	public void MoveTo(final Vector2D position) {
 		// Pfadplanung
 	}
-	
+
 	@Override
 	public String toString() {
 		return "C"; // C for Character
 	}
-	
+
 	@Override
 	public GameObjectTag getGameObjectTag() {
 		return GameObjectTag.GAME_CHARACTER;
@@ -165,5 +171,4 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 		this.sleepWeight = sleepWeight;
 	}
 
-	
 }

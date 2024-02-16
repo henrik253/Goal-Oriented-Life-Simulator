@@ -9,7 +9,8 @@ import application.utils.Vector2D;
 public class Model implements GUIInterface {
 
 	private GameField gameField = GameField.getGameField();
-
+	private boolean gameStarted = false; 
+	
 	public Model() {
 
 	}
@@ -29,6 +30,15 @@ public class Model implements GUIInterface {
 	@Override
 	public void startGame() {
 		gameField.startElementsOnField();
+		gameStarted = true; 
+	}
+	
+	@Override
+	public void update() {
+		if(!gameStarted) {
+			throw new IllegalStateException("Trying to update but game did not start"); 
+		}
+		
 	}
 
 	@Override
@@ -59,4 +69,5 @@ public class Model implements GUIInterface {
 		return gameField.getGameObjectTagField();
 	}
 
+	
 }
