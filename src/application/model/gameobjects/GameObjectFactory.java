@@ -1,6 +1,7 @@
 package application.model.gameobjects;
 
 import application.model.gameobjects.actions.*;
+import application.model.gameobjects.character.GameCharacter;
 import application.utils.Vector2D;
 
 public class GameObjectFactory {

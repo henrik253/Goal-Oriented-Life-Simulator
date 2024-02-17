@@ -1,16 +1,16 @@
 package application.model;
 
-import application.model.gameobjects.GameCharacter;
 import application.model.gameobjects.GameObject;
 import application.model.gameobjects.GameObjectFactory;
 import application.model.gameobjects.GameObjectTag;
+import application.model.gameobjects.character.GameCharacter;
 import application.utils.Vector2D;
 
 public class Model implements GUIInterface {
 
 	private GameField gameField = GameField.getGameField();
-	private boolean gameStarted = false; 
-	
+	private boolean gameStarted = false;
+
 	public Model() {
 
 	}
@@ -30,15 +30,20 @@ public class Model implements GUIInterface {
 	@Override
 	public void startGame() {
 		gameField.startElementsOnField();
-		gameStarted = true; 
+		gameStarted = true;
 	}
-	
+
 	@Override
 	public void update() {
-		if(!gameStarted) {
-			throw new IllegalStateException("Trying to update but game did not start"); 
+		if (!gameStarted) {
+			throw new IllegalStateException("Game did not start");
 		}
-		
+
+	}
+
+	@Override
+	public void stopGame() {
+
 	}
 
 	@Override
@@ -60,7 +65,7 @@ public class Model implements GUIInterface {
 		if (!(gameObject instanceof GameCharacter)) {
 			throw new IllegalArgumentException("No GameCharacter at " + position);
 		}
-		
+
 		// ... cast and then set Character
 	}
 
@@ -69,5 +74,4 @@ public class Model implements GUIInterface {
 		return gameField.getGameObjectTagField();
 	}
 
-	
 }

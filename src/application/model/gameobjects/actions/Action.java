@@ -2,15 +2,17 @@ package application.model.gameobjects.actions;
 
 import application.model.gameobjects.GameObject;
 import application.model.gameobjects.GameObjectTag;
+import application.model.gameobjects.character.GameCharacter;
 import application.utils.Vector2D;
-
-// Actions are distributed across the map 
 
 public abstract class Action implements GameObject {
 	protected Vector2D position;
 
 	protected boolean available;
 	
+	protected int initalTime = 1;
+	protected int time = 1;
+
 	protected GameObjectTag tag;
 
 	public Action(Vector2D position) {
@@ -19,19 +21,35 @@ public abstract class Action implements GameObject {
 		available = true;
 	}
 
-	public abstract double getSatisfaction();
+	public abstract double getSatisfaction(GameCharacter gameCharacter);
+	
+	public abstract void satisfyCharacter(GameCharacter gameCharacter);
 
 	@Override
 	public Vector2D getPosition() {
 		return position;
+	}
+	
+	@Override
+	public void setPosition(Vector2D position) {
+		this.position = position;
 	}
 
 	public synchronized boolean isAvailable() {
 		return available;
 	}
 
-	public synchronized void setAvailable(boolean used) {
-		this.available = used;
+	public boolean runAction() {
+		available = false;
+		if(time == 0) {
+			time = initalTime;
+			available = true;
+			return true;
+		}
+		else {
+			time--; 
+		}
+		return false;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package application.model.gameobjects.actions;
 
 import application.model.gameobjects.GameObjectTag;
+import application.model.gameobjects.character.GameCharacter;
 import application.utils.Vector2D;
 
 public class Study extends Action
@@ -12,7 +13,7 @@ public class Study extends Action
     }
 
     @Override
-    public double getSatisfaction()
+    public double getSatisfaction(GameCharacter gameCharacter)
     {
         return 1.0;
     }
@@ -22,4 +23,9 @@ public class Study extends Action
 		return GameObjectTag.STUDY;
 	}
 
+	
+	@Override
+	public void satisfyCharacter(GameCharacter gameCharacter) {
+		gameCharacter.setIntellectuallySatisfaction(gameCharacter.getIntellectuallySatisfaction() + getSatisfaction(gameCharacter));
+	}
 }

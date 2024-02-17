@@ -20,6 +20,18 @@ public class GameField {
 		return GAME_FIELD;
 	}
 
+	public void moveGameObject(GameObject gameObject, final Vector2D position) {
+		final Vector2D pos = gameObject.getPosition();
+
+		if (field[position.getY()][position.getX()] != null) {
+			throw new IllegalArgumentException("Already a gameobject on " + position);
+		}
+
+		gameObject.setPosition(position);
+		field[position.getY()][position.getX()] = gameObject;
+		field[pos.getY()][pos.getX()] = null;
+	}
+
 	public void addGameObject(GameObject gameObject) {
 		Vector2D position = gameObject.getPosition();
 		if (field[position.getY()][position.getX()] != null) {
@@ -75,6 +87,10 @@ public class GameField {
 			}
 		}
 		return tagField;
+	}
+
+	public GameObject[][] getField() {
+		return field;
 	}
 
 	@Override

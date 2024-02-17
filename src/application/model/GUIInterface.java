@@ -12,6 +12,8 @@ public interface GUIInterface {
 	public void startGame();
 	
 	public void update(); 
+	
+	public void stopGame();
 
 	public double[] getGameCharacterInformation(Vector2D position);
 

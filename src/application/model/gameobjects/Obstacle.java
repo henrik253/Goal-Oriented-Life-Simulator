@@ -11,11 +11,17 @@ public class Obstacle implements GameObject {
 	}
 
 	public Vector2D getPosition() {
-		return position; 
+		return position;
+	}
+
+	@Override
+	public void setPosition(Vector2D position) {
+		this.position = position;
 	}
 
 	@Override
 	public GameObjectTag getGameObjectTag() {
 		return GameObjectTag.OBSTACLE;
 	}
+
 }
