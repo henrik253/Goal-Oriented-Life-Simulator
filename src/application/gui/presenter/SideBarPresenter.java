@@ -1,25 +1,39 @@
 package application.gui.presenter;
 
 import application.gui.views.SideBarView;
+import application.model.gameobjects.GameObjectTag;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
-public class SideBarPresenter {
+public class SideBarPresenter
+{
 
-	public MainPresenter getMainPresenter() {
-		return mainPresenter;
-	}
+    private MainPresenter mainPresenter;
 
-	public void setMainPresenter(MainPresenter mainPresenter) {
-		this.mainPresenter = mainPresenter;
-	}
+    private SideBarView sideBarView;
 
-	public SideBarView getSideBarView() {
-		return sideBarView;
-	}
+    public MainPresenter getMainPresenter()
+    {
+        return mainPresenter;
+    }
 
-	public void setSideBarView(SideBarView sideBarView) {
-		this.sideBarView = sideBarView;
-	}
+    public void setMainPresenter(MainPresenter mainPresenter)
+    {
+        this.mainPresenter = mainPresenter;
+    }
 
-	private MainPresenter mainPresenter;
-	private SideBarView sideBarView;
+    public SideBarView getSideBarView()
+    {
+        return sideBarView;
+    }
+
+    public void setSideBarView(SideBarView sideBarView)
+    {
+        this.sideBarView = sideBarView;
+    }
+
+    public void gameObjectButtonPressed(GameObjectTag tag)
+    {
+
+    }
 }

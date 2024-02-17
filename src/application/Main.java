@@ -6,11 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
 import application.gui.presenter.MainPresenter;
 import application.gui.presenter.SideBarPresenter;
 import application.gui.presenter.SimulationPresenter;
