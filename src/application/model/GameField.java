@@ -63,6 +63,23 @@ public class GameField {
 			throw new IllegalStateException("No Startable on GameField");
 		}
 	}
+	
+	public void updateElementsOnField() {
+		boolean noneStartElement = true;
+		for (int row = 0; row < field.length; row++) {
+			for (int col = 0; col < field[row].length; col++) {
+				GameObject gameObject = field[row][col];
+				if (gameObject instanceof Startable) {
+					((Startable) gameObject).update();
+					noneStartElement = false;
+				}
+			}
+		}
+		if (noneStartElement) {
+			throw new IllegalStateException("No Startable on GameField");
+		}
+	}
+
 
 	public GameObject get(Vector2D position) {
 		GameObject gameObject = field[position.getY()][position.getX()];
@@ -105,4 +122,5 @@ public class GameField {
 		return result;
 	}
 
+	
 }

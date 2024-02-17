@@ -38,6 +38,7 @@ public class Model implements GUIInterface {
 		if (!gameStarted) {
 			throw new IllegalStateException("Game did not start");
 		}
+		gameField.updateElementsOnField(); 
 
 	}
 
