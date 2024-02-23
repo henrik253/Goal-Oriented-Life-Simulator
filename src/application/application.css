@@ -7,3 +7,74 @@
 #SimulationView{
 	-fx-background-color: #ebebeb;
 }
+
+
+
+/* 	EATING, MEETING, SLEEP, SPEND_MONEY, STUDY, WORK, GAME_CHARACTER, OBSTACLE */
+
+#EATING_BUTTON{
+	-fx-background-color: #2a4858;
+}
+
+#EATING_TEXT{
+	-fx-background-color: #2a4858;
+}
+
+#MEETING_BUTTON{
+	-fx-background-color: #215d6e;
+}
+
+#MEETING_TEXT{
+	-fx-background-color: #215d6e;
+}
+
+
+#SLEEP_BUTTON{
+	-fx-background-color: #08737f;
+}
+
+
+#SLEEP_TEXT{
+	-fx-background-color: #08737f;
+}
+
+#SPEND_MONEY_BUTTON{
+	-fx-background-color: #00898a;
+}
+
+#SPEND_MONEY_TEXT{
+	-fx-background-color: #00898a;
+}
+
+#STUDY_BUTTON{
+	-fx-background-color: #089f8f;
+}
+
+#STUDY_TEXT{
+	-fx-background-color: #089f8f;
+}
+
+#WORK_BUTTON{
+	-fx-background-color: #39b48e;
+}
+
+#WORK_TEXT{
+	-fx-background-color: #39b48e;
+}
+
+#GAME_CHARACTER_BUTTON{
+	-fx-background-color: #ff4500;
+}
+
+#GAME_CHARACTER_TEXT{
+	-fx-background-color: #ff4500;
+}
+
+#OBSTACLE_BUTTON{
+	-fx-background-color: #4a4a4a;
+}
+
+
+#OBSTACLE_TEXT{
+	-fx-background-color: #4a4a4a;
+}

@@ -12,62 +12,74 @@ import application.gui.presenter.SimulationPresenter;
 import application.gui.views.*;
 import application.model.Model;
 
-public class Main extends Application {
-	private static final double SCENE_WIDTH = 1080, SCENE_HEIGHT = 720;
+public class Main extends Application
+{
+    private static final double SCENE_WIDTH = 1080, SCENE_HEIGHT = 720;
 
-	private static final double SIDE_BAR_WIDTH = SCENE_WIDTH / 4, SIDE_BAR_HEIGHT = SCENE_HEIGHT;
+    private static final double SIDE_BAR_WIDTH = SCENE_WIDTH / 4,
+                    SIDE_BAR_HEIGHT = SCENE_HEIGHT;
 
-	private BorderPane root;
-	private Pane sideBarView, simulationView;
+    private static final int ROWS = 500, COLUMNS = 500;
 
-	private MainPresenter mainPresenter;
-	private SideBarPresenter sideBarPresenter;
-	private SimulationPresenter simulationPresenter;
+    private BorderPane root;
 
-	private Model model;
+    private Pane sideBarView, simulationView;
 
-	@Override
-	public void start(Stage primaryStage) {
-		root = new BorderPane();
-		Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		primaryStage.setScene(scene);
-		initGUI();
-		initModel();
-		addElementsToRoot();
+    private MainPresenter mainPresenter;
 
-		mainPresenter.setModel(model);
+    private SideBarPresenter sideBarPresenter;
 
-		primaryStage.show();
-	}
+    private SimulationPresenter simulationPresenter;
 
-	private void initGUI() {
-		sideBarView = new SideBarView(SIDE_BAR_WIDTH, SIDE_BAR_HEIGHT);
-		simulationView = new SimulationView(SCENE_WIDTH - SIDE_BAR_WIDTH, SIDE_BAR_HEIGHT);
-		mainPresenter = new MainPresenter();
-		sideBarPresenter = new SideBarPresenter();
-		simulationPresenter = new SimulationPresenter();
+    private Model model;
 
-		((SideBarView) sideBarView).setSideBarPresenter(sideBarPresenter);
-		((SimulationView) simulationView).setSimulationPresenter(simulationPresenter);
+    @Override
+    public void start(Stage primaryStage)
+    {
+        root = new BorderPane();
+        Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        primaryStage.setScene(scene);
+        initGUI();
+        initModel();
+        addElementsToRoot();
 
-		sideBarPresenter.setMainPresenter(mainPresenter);
-		sideBarPresenter.setSideBarView(((SideBarView) sideBarView));
+        mainPresenter.setModel(model);
 
-		simulationPresenter.setMainPresenter(mainPresenter);
-		simulationPresenter.setSimulationView(((SimulationView) simulationView));
-	}
+        primaryStage.show();
+    }
 
-	private void initModel() {
-		model = new Model();
-	}
+    private void initGUI()
+    {
+        sideBarView = new SideBarView(SIDE_BAR_WIDTH, SIDE_BAR_HEIGHT);
+        simulationView = new SimulationView(SCENE_WIDTH - SIDE_BAR_WIDTH, SIDE_BAR_HEIGHT, ROWS, COLUMNS);
+        mainPresenter = new MainPresenter();
+        sideBarPresenter = new SideBarPresenter();
+        simulationPresenter = new SimulationPresenter();
 
-	private void addElementsToRoot() {
-		root.setLeft(sideBarView);
-		root.setCenter(simulationView);
-	}
+        ((SideBarView) sideBarView).setSideBarPresenter(sideBarPresenter);
+        ((SimulationView) simulationView).setSimulationPresenter(simulationPresenter);
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+        sideBarPresenter.setMainPresenter(mainPresenter);
+        sideBarPresenter.setSideBarView(((SideBarView) sideBarView));
+
+        simulationPresenter.setMainPresenter(mainPresenter);
+        simulationPresenter.setSimulationView(((SimulationView) simulationView));
+    }
+
+    private void initModel()
+    {
+        model = new Model();
+    }
+
+    private void addElementsToRoot()
+    {
+        root.setLeft(sideBarView);
+        root.setCenter(simulationView);
+    }
+
+    public static void main(String[] args)
+    {
+        launch(args);
+    }
 }

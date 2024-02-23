@@ -4,31 +4,48 @@ import application.gui.presenter.SimulationPresenter;
 import application.model.gameobjects.GameObjectTag;
 import javafx.scene.layout.Pane;
 
-public class SimulationView extends Pane {
+public class SimulationView extends Pane
+{
 
-	private SimulationPresenter simulationPresenter;
+    private SimulationPresenter simulationPresenter;
 
-	public SimulationView(double width, double height) {
-		setPrefWidth(width);
-		setPrefHeight(height);
-		setId("SimulationView");
-		init();
-	}
+    private Pane grid = new Pane();
 
-	private void init() {
+    private
 
-	}
+    public SimulationView(double width, double height, int rows, int columns)
+    {
+        setPrefWidth(width);
+        setPrefHeight(height);
+        setId("SimulationView");
+        init();
+    }
 
-	public void updateView(GameObjectTag[][] field) {
+    private void init()
+    {
 
-	}
+        getChildren().add(grid);
+    }
 
-	public SimulationPresenter getSimulationPresenter() {
-		return simulationPresenter;
-	}
+    private void drawGrid()
+    {
+        grid.setPrefSize(getPrefWidth(), getPrefHeight());
 
-	public void setSimulationPresenter(SimulationPresenter simulationPresenter) {
-		this.simulationPresenter = simulationPresenter;
-	}
+    }
+
+    public void updateView(GameObjectTag[][] field)
+    {
+
+    }
+
+    public SimulationPresenter getSimulationPresenter()
+    {
+        return simulationPresenter;
+    }
+
+    public void setSimulationPresenter(SimulationPresenter simulationPresenter)
+    {
+        this.simulationPresenter = simulationPresenter;
+    }
 
 }
