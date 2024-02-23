@@ -47,6 +47,8 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 	
 	private PathPlaning pathPlaning = new DepthFirstSearch();
 
+	private List<Vector2D> path;
+	
 	public GameCharacter(Vector2D position) {
 		this.position = position;
 		updateOverallSatisfaction();
@@ -78,12 +80,16 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 			boolean finished = action.runAction();
 			if(finished) {
 				action.satisfyCharacter(this);
+				path = null;
 			}
 		}
 		
 		// Path Planing
-		List<Vector2D> path = pathPlaning.getPath(gameField.getField(),position,action.getPosition());
-		moveTo(path.get(1));
+		if(path == null) {
+			path = pathPlaning.getPath(gameField.getField(),position,action.getPosition());
+			path.remove(0);
+		}
+		moveTo(path.remove(0));
 	}
 
 	@Override
@@ -93,6 +99,7 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 
 	@Override
 	public void moveTo(final Vector2D position) {
+		
 		gameField.moveGameObject(this, position);
 	}
 

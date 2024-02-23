@@ -19,7 +19,7 @@ public class Main extends Application
     private static final double SIDE_BAR_WIDTH = SCENE_WIDTH / 4,
                     SIDE_BAR_HEIGHT = SCENE_HEIGHT;
 
-    private static final int ROWS = 500, COLUMNS = 500;
+    private static final int ROWS = 25, COLUMNS = 25;
 
     private BorderPane root;
 
@@ -65,6 +65,9 @@ public class Main extends Application
 
         simulationPresenter.setMainPresenter(mainPresenter);
         simulationPresenter.setSimulationView(((SimulationView) simulationView));
+        
+        mainPresenter.setSimulationPresenter(simulationPresenter);
+        mainPresenter.setSiderBarPresenter(sideBarPresenter);
     }
 
     private void initModel()

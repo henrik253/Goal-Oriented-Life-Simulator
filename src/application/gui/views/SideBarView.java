@@ -1,33 +1,23 @@
 package application.gui.views;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import application.gui.Settings;
 import application.gui.presenter.SideBarPresenter;
 import application.model.gameobjects.GameObjectTag;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class SideBarView extends Pane {
 
 	private class GameObjectRepresentation extends VBox {
-		
-		
+
 		private GameObjectTag tag;
 		private String name;
 		private Color color;
@@ -41,7 +31,7 @@ public class SideBarView extends Pane {
 			this.name = name;
 			this.color = color;
 			this.size = size;
-			this.setPadding(new Insets(10,10,10,10));
+			this.setPadding(new Insets(10, 10, 10, 10));
 			button = new Button();
 			button.setPrefSize(size, size);
 			button.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, new Insets(0))));
@@ -50,43 +40,66 @@ public class SideBarView extends Pane {
 
 			getChildren().addAll(text, button);
 		}
-		
+
 		private void buttonPressed() {
-			sideBarPresenter.gameObjectButtonPressed(tag); 
+			sideBarPresenter.gameObjectButtonPressed(tag);
 		}
 
 	}
-
+	
+	private static final double GAME_OBJECT_SIZE = 40;
+	
 	private SideBarPresenter sideBarPresenter;
 
 	private FlowPane gameObjects = new FlowPane();
-
+	
+	private Button startButton = new Button("Start"); 
+	
 	public SideBarView(double witdh, double height) {
 		this.setPrefHeight(height);
 		this.setPrefWidth(witdh);
 		this.setMaxWidth(witdh);
 		this.setId("SiderBarView");
+		gameObjects.setPrefWidth(getPrefWidth() - 20);
 		init();
-	
+
 	}
 
 	private void init() {
+		initSelectableGameObjects();
+		startButton.setOnAction( event -> sideBarPresenter.startGame());
+		getChildren().add(startButton);
+	}
 	
-		GameObjectRepresentation obstacle = new GameObjectRepresentation(GameObjectTag.OBSTACLE, "Obstacle",
-				Color.BLACK, 50);
-		
+	private void initSelectableGameObjects() {
+		GameObjectRepresentation obstacle = new GameObjectRepresentation(GameObjectTag.WALL, "Wall",
+				Settings.COLOR_OBSTACLE_WALL, GAME_OBJECT_SIZE);
+
 		GameObjectRepresentation character = new GameObjectRepresentation(GameObjectTag.GAME_CHARACTER, "Character",
-				Color.RED, 50);
-		
-		GameObjectRepresentation actionEating = new GameObjectRepresentation(GameObjectTag.EATING, "EATING",
-				Color.ALICEBLUE, 50);
-		
-		GameObjectRepresentation actionSleep = new GameObjectRepresentation(GameObjectTag.OBSTACLE, "Sleep",
-				Color.AQUA, 50);
-		
-		
-		gameObjects.getChildren().addAll(obstacle,character,actionEating,actionSleep);
-		
+				Settings.COLOR_GAME_CHARACTER, GAME_OBJECT_SIZE);
+
+		// Actions
+		GameObjectRepresentation actionEating = new GameObjectRepresentation(GameObjectTag.EATING, "Eat",
+				Settings.COLOR_ACTION_EATING, GAME_OBJECT_SIZE);
+
+		GameObjectRepresentation actionSleep = new GameObjectRepresentation(GameObjectTag.WALL, "Sleep",
+				Settings.COLOR_OBSTACLE_WALL, GAME_OBJECT_SIZE);
+
+		GameObjectRepresentation actionSpendMoney = new GameObjectRepresentation(GameObjectTag.SPEND_MONEY, "Buy",
+				Settings.COLOR_ACTION_SPEND_MONEY, GAME_OBJECT_SIZE);
+
+		GameObjectRepresentation actionStudy = new GameObjectRepresentation(GameObjectTag.STUDY, "Study",
+				Settings.COLOR_ACTION_STUDY, GAME_OBJECT_SIZE);
+
+		GameObjectRepresentation actionWork = new GameObjectRepresentation(GameObjectTag.WORK, "Work",
+				Settings.COLOR_ACTION_STUDY, GAME_OBJECT_SIZE);
+
+		GameObjectRepresentation actionMeeting = new GameObjectRepresentation(GameObjectTag.MEETING, "Meet",
+				Settings.COLOR_ACTION_MEETING, GAME_OBJECT_SIZE);
+
+		gameObjects.getChildren().addAll(obstacle, character, actionEating, actionSleep, actionSpendMoney, actionStudy,
+				actionWork, actionMeeting);
+
 		getChildren().add(gameObjects);
 	}
 

@@ -5,15 +5,15 @@ import application.utils.Vector2D;
 
 public interface GUIInterface {
 
-	public void addGameObject(GameObjectTag tag, Vector2D position);
-
-	public void removeGameObject(Vector2D position);
+	public void setGameObjectMap(GameObjectTag[][] gameObjectMap);
 
 	public void startGame();
 	
 	public void update(); 
 	
 	public void stopGame();
+	
+	public boolean isRunning();
 
 	public double[] getGameCharacterInformation(Vector2D position);
 

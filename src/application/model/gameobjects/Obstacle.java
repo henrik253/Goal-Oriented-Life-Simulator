@@ -21,7 +21,7 @@ public class Obstacle implements GameObject {
 
 	@Override
 	public GameObjectTag getGameObjectTag() {
-		return GameObjectTag.OBSTACLE;
+		return GameObjectTag.WALL;
 	}
 
 }

@@ -9,7 +9,6 @@ public class CharacterSatisfaction {
 	
 	// Includes the amount of the Time an Action takes to do in the computation
 	public static Action getHighestSatisfactionAndTimeAction(GameCharacter gameCharacter,List<Action> actions) {
-		
 		return actions.get(0);
 	}
 	

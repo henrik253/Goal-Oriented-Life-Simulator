@@ -34,6 +34,10 @@ public class SideBarPresenter
 
     public void gameObjectButtonPressed(GameObjectTag tag)
     {
-
+    	mainPresenter.gameObjectButtonPressed(tag);
     }
+
+	public void startGame() {
+		mainPresenter.startSimulation();
+	}
 }

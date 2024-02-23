@@ -9,42 +9,36 @@ import application.utils.Vector2D;
 public class Model implements GUIInterface {
 
 	private GameField gameField = GameField.getGameField();
-	private boolean gameStarted = false;
+	private boolean gameRunning = false;
 
 	public Model() {
 
 	}
 
-	@Override
-	public void addGameObject(GameObjectTag tag, Vector2D position) {
-		GameObject gameObject = GameObjectFactory.createGameObject(tag, position); // Actions are added to ActionHandler
-																					// by Instantiating
-		gameField.addGameObject(gameObject);
-	}
 
 	@Override
-	public void removeGameObject(Vector2D position) {
-		gameField.removeGameObject(position);
+	public void setGameObjectMap(GameObjectTag[][] gameObjectMap) {
+		gameField.setGameField(gameObjectMap);
 	}
-
+	
 	@Override
 	public void startGame() {
 		gameField.startElementsOnField();
-		gameStarted = true;
+		gameRunning = true;
 	}
 
 	@Override
 	public void update() {
-		if (!gameStarted) {
+		if (!gameRunning) {
 			throw new IllegalStateException("Game did not start");
 		}
-		gameField.updateElementsOnField(); 
+		gameField.updateStartables(); 
 
 	}
 
 	@Override
 	public void stopGame() {
-
+		gameRunning = false;
 	}
 
 	@Override
@@ -74,5 +68,12 @@ public class Model implements GUIInterface {
 	public GameObjectTag[][] getField() {
 		return gameField.getGameObjectTagField();
 	}
+
+
+	@Override
+	public boolean isRunning() {
+		return gameRunning;
+	}
+
 
 }

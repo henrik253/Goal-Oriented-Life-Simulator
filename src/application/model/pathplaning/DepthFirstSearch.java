@@ -1,6 +1,8 @@
 package application.model.pathplaning;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import application.model.gameobjects.GameObject;
@@ -16,47 +18,36 @@ public class DepthFirstSearch implements PathPlaning {
 		return getPath(field, from, to).size();
 	}
 
-	@Override
 	public List<Vector2D> getPath(GameObject[][] field, Vector2D from, Vector2D to) {
 		boolean[][] visited = new boolean[field.length][field[0].length];
-		List<Vector2D> path = new LinkedList<>();
-		List<Vector2D> stack = new LinkedList<>();
-		Vector2D currentPos;
-		if (outOfBounds(field, from)) {
-			throw new IndexOutOfBoundsException("Position " + from + " is out of bounds!");
+		List<Vector2D> path = new ArrayList<>();
+		if (dfs(field, from, to, visited, path)) {
+			return path;
+		}
+		return Collections.emptyList(); // or indicate path not found
+	}
+
+	private boolean dfs(GameObject[][] field, Vector2D current, Vector2D to, boolean[][] visited, List<Vector2D> path) {
+		if (outOfBounds(field, current) || visited[current.getY()][current.getX()]) {
+			return false;
 		}
 
-		stack.add(from);
+		visited[current.getY()][current.getX()] = true;
+		path.add(current);
 
-		while (!stack.isEmpty()) {
-			currentPos = stack.remove(stack.size() - 1);
-			path.add(currentPos);
+		if (current.equals(to)) {
+			return true; // Destination reached
+		}
 
-			if (!outOfBounds(field, currentPos) && !visited[currentPos.getY()][currentPos.getX()]) {
-
-				visited[currentPos.getY()][currentPos.getX()] = true;
-				boolean foundNeighbour = false;
-				for (Vector2D direction : DIRECTIONS) {
-					Vector2D neighbour = Vector2D.add(currentPos, direction);
-
-					if (!outOfBounds(field, neighbour) && !visited[neighbour.getY()][neighbour.getX()]
-							&& field[neighbour.getY()][neighbour.getX()] == null) {
-
-						foundNeighbour = true;
-						stack.add(neighbour);
-
-						if (neighbour.equals(to)) {
-							path.add(neighbour);
-							return path;
-						}
-					}
-				}
-				if (!foundNeighbour) {
-					path.remove(currentPos);
-				}
+		for (Vector2D direction : DIRECTIONS) {
+			Vector2D next = Vector2D.add(current, direction);
+			if (!outOfBounds(field, next) && dfs(field, next, to, visited, path)) {
+				return true; // Path found
 			}
 		}
-		return path;
+
+		path.remove(path.size() - 1); // Backtrack
+		return false;
 	}
 
 	private boolean outOfBounds(GameObject[][] field, Vector2D position) {
@@ -64,10 +55,10 @@ public class DepthFirstSearch implements PathPlaning {
 				|| position.getY() >= field.length;
 	}
 
-//	public static void main(String[] args) {
-//		GameObject[][] field = new GameObject[10][10];
-//
-//		System.out.println(new DepthFirstSearch().getPath(field, new Vector2D(0, 0), new Vector2D(9, 9)));
-//	}
+	public static void main(String[] args) {
+		GameObject[][] field = new GameObject[10][10];
+
+		System.out.println(new DepthFirstSearch().getPath(field, new Vector2D(0, 0), new Vector2D(9, 9)));
+	}
 
 }

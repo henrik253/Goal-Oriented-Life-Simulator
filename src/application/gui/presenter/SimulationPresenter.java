@@ -8,8 +8,6 @@ public class SimulationPresenter {
 	private MainPresenter mainPresenter;
 	private SimulationView simulationView;
 	
-	private GameObjectTag tag = GameObjectTag.OBSTACLE; // by default Obstacle 
-	
 	public MainPresenter getMainPresenter() {
 		return mainPresenter;
 	}
@@ -27,7 +25,18 @@ public class SimulationPresenter {
 	}
 
 	public void setGameObjectTag(GameObjectTag tag) {
-		this.tag = tag; 
+		simulationView.setGameObjectTag(tag);
+	}
+	
+	public void updateModel(GameObjectTag[][] gameObjectMap) {
+		mainPresenter.setGameObjectMapInModel(gameObjectMap); 
+	}
+	
+	public GameObjectTag[][] getGameObjectMap() {
+		return simulationView.getGameObjectMap();
 	}
 
+	public void drawSimulationGrid(GameObjectTag[][] gameObjectMap) {
+		simulationView.draw(gameObjectMap);
+	}
 }

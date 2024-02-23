@@ -28,10 +28,9 @@ public class GameObjectFactory {
 			yield new Work(position);
 		}
 		case GAME_CHARACTER -> {
-			
 			yield new GameCharacter(position);
 		}
-		case OBSTACLE -> {
+		case WALL -> {
 			yield new Obstacle(position);
 		}
 		default -> throw new IllegalArgumentException("Unexpected value: " + tag);
