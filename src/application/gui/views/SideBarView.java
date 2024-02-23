@@ -12,7 +12,10 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -20,79 +23,79 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-public class SideBarView extends Pane
-{
+public class SideBarView extends Pane {
 
-    private SideBarPresenter sideBarPresenter;
+	private class GameObjectRepresentation extends VBox {
+		
+		
+		private GameObjectTag tag;
+		private String name;
+		private Color color;
+		private double size;
 
-    private VBox obstacleBar;
+		private Button button;
+		private Text text;
 
-    public SideBarView(double witdh, double height)
-    {
-        this.setPrefHeight(height);
-        this.setPrefWidth(witdh);
-        this.setId("SiderBarView");
-        init();
-    }
+		public GameObjectRepresentation(GameObjectTag tag, String name, Color color, double size) {
+			this.tag = tag;
+			this.name = name;
+			this.color = color;
+			this.size = size;
+			this.setPadding(new Insets(10,10,10,10));
+			button = new Button();
+			button.setPrefSize(size, size);
+			button.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, new Insets(0))));
+			button.setOnAction(event -> buttonPressed());
+			text = new Text(name);
 
-    private class GameObjectWrapper extends Pane
-    {
-        private static List<GameObjectWrapper> instances = new LinkedList<>();
+			getChildren().addAll(text, button);
+		}
+		
+		private void buttonPressed() {
+			sideBarPresenter.gameObjectButtonPressed(tag); 
+		}
 
-        private static final int INSETS = 50;
+	}
 
-        private VBox wrapper = new VBox(INSETS);
+	private SideBarPresenter sideBarPresenter;
 
-        private Text text = new Text();
+	private FlowPane gameObjects = new FlowPane();
 
-        private Button button = new Button();
+	public SideBarView(double witdh, double height) {
+		this.setPrefHeight(height);
+		this.setPrefWidth(witdh);
+		this.setMaxWidth(witdh);
+		this.setId("SiderBarView");
+		init();
+	
+	}
 
-        private GameObjectTag tag;
+	private void init() {
+	
+		GameObjectRepresentation obstacle = new GameObjectRepresentation(GameObjectTag.OBSTACLE, "Obstacle",
+				Color.BLACK, 50);
+		
+		GameObjectRepresentation character = new GameObjectRepresentation(GameObjectTag.GAME_CHARACTER, "Character",
+				Color.RED, 50);
+		
+		GameObjectRepresentation actionEating = new GameObjectRepresentation(GameObjectTag.EATING, "EATING",
+				Color.ALICEBLUE, 50);
+		
+		GameObjectRepresentation actionSleep = new GameObjectRepresentation(GameObjectTag.OBSTACLE, "Sleep",
+				Color.AQUA, 50);
+		
+		
+		gameObjects.getChildren().addAll(obstacle,character,actionEating,actionSleep);
+		
+		getChildren().add(gameObjects);
+	}
 
-        public GameObjectWrapper(GameObjectTag tag, double width, double height)
-        {
-            instances.add(this);
-            button.setBorder(Border.stroke(Color.BLACK));
-            this.tag = tag;
-           // this.setPrefSize(width, height);
-            button.setPrefSize(width, height);
-            button.setId(tag.toString() + "_BUTTON");
-            button.setOnMouseClicked(this::onMouseClick);
-            text.setId(tag.toString() + "_TEXT");
-            wrapper.getChildren().addAll(this.text, button);
-            getChildren().add(wrapper);
-        }
+	public SideBarPresenter getSideBarPresenter() {
+		return sideBarPresenter;
+	}
 
-        private void onMouseClick(MouseEvent event)
-        {
-            sideBarPresenter.gameObjectButtonPressed(tag);
-            instances.forEach(instance -> instance.button.setBorder(Border.stroke(Color.BLACK)));
-            button.setBorder(Border.stroke(Color.GREEN));
-        }
-    }
-
-    private void init()
-    {
-        obstacleBar = new VBox();
-        int length = GameObjectTag.values().length;
-        for (GameObjectTag tag : GameObjectTag.values())
-        {
-            GameObjectWrapper obj = new GameObjectWrapper(tag, this.getPrefWidth() / length, this.getPrefWidth() / length);
-            obstacleBar.getChildren().add(obj);
-
-        }
-
-        getChildren().add(obstacleBar);
-    }
-
-    public SideBarPresenter getSideBarPresenter()
-    {
-        return sideBarPresenter;
-    }
-
-    public void setSideBarPresenter(SideBarPresenter sideBarPresenter)
-    {
-        this.sideBarPresenter = sideBarPresenter;
-    }
+	public void setSideBarPresenter(SideBarPresenter sideBarPresenter) {
+		this.sideBarPresenter = sideBarPresenter;
+	}
 
 }
