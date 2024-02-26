@@ -42,23 +42,6 @@ public class GameField {
 		field[pos.getY()][pos.getX()] = null;
 	}
 
-	// unnötig?
-//	public void addGameObject(GameObject gameObject) {
-//		Vector2D position = gameObject.getPosition();
-//		if (field[position.getY()][position.getX()] != null) {
-//			throw new IllegalArgumentException("GameObject at position: " + position);
-//		}
-//		field[position.getY()][position.getX()] = gameObject;
-//	}
-//	// unnötig?
-//	public void removeGameObject(Vector2D position) {
-//		if (field[position.getY()][position.getX()] == null) {
-//			throw new IllegalArgumentException("GameField at " + position + " is already null");
-//		}
-//
-//		field[position.getY()][position.getX()] = null;
-//	}
-
 	public void startElementsOnField() {
 		boolean noneStartElement = true;
 	

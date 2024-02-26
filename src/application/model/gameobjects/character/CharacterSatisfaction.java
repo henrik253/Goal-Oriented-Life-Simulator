@@ -8,8 +8,12 @@ public class CharacterSatisfaction {
 	
 	
 	// Includes the amount of the Time an Action takes to do in the computation
-	public static Action getHighestSatisfactionAndTimeAction(GameCharacter gameCharacter,List<Action> actions) {
-		return actions.get(0);
+	public static Action getNextAction(GameCharacter gameCharacter,List<Action> actions) {
+		if(actions.isEmpty()) {
+			throw new IllegalArgumentException("No Actions on Map");
+		}
+		System.out.println(actions);
+		return actions.get((int) (Math.random() * actions.size()));
 	}
 	
 	// Includes the length of the way in the computation

@@ -19,7 +19,7 @@ public class Main extends Application
     private static final double SIDE_BAR_WIDTH = SCENE_WIDTH / 4,
                     SIDE_BAR_HEIGHT = SCENE_HEIGHT;
 
-    private static final int ROWS = 25, COLUMNS = 25;
+    private static final int ROWS = 50, COLUMNS = 50;
 
     private BorderPane root;
 

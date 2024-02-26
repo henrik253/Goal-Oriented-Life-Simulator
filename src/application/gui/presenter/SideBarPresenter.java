@@ -40,4 +40,8 @@ public class SideBarPresenter
 	public void startGame() {
 		mainPresenter.startSimulation();
 	}
+
+	public void stopGame() {
+		mainPresenter.stopSimulation();
+	}
 }

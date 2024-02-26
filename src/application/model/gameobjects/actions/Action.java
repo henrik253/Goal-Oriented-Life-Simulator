@@ -2,10 +2,11 @@ package application.model.gameobjects.actions;
 
 import application.model.gameobjects.GameObject;
 import application.model.gameobjects.GameObjectTag;
+import application.model.gameobjects.Startable;
 import application.model.gameobjects.character.GameCharacter;
 import application.utils.Vector2D;
 
-public abstract class Action implements GameObject {
+public abstract class Action implements GameObject, Startable {
 	protected Vector2D position;
 
 	protected boolean available;
@@ -17,7 +18,6 @@ public abstract class Action implements GameObject {
 
 	public Action(Vector2D position) {
 		this.position = position;
-		ActionHandler.getActionHandler().addAction(this);
 		available = true;
 	}
 
@@ -34,7 +34,17 @@ public abstract class Action implements GameObject {
 	public void setPosition(Vector2D position) {
 		this.position = position;
 	}
-
+	
+	@Override
+	public void start() {
+		ActionHandler.getActionHandler().addAction(this);
+	}
+	
+	@Override
+	public void update() {
+		
+	}
+	
 	public synchronized boolean isAvailable() {
 		return available;
 	}
@@ -54,6 +64,6 @@ public abstract class Action implements GameObject {
 
 	@Override
 	public String toString() {
-		return "A"; // A for Action
+		return "" + getGameObjectTag().name().charAt(0); 
 	}
 }

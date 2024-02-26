@@ -13,6 +13,8 @@ public class MainPresenter {
 	
 	private Model model;
 
+	private Thread simulationThread;
+	
 	public Model getModel() {
 		return model;
 	}
@@ -49,7 +51,7 @@ public class MainPresenter {
 		setGameObjectMapInModel(simulationPresenter.getGameObjectMap());
 		model.startGame();
 
-		new Thread(() -> {
+		simulationThread = new Thread(() -> {
 			while (model.isRunning()) {
 			
 				model.update(); 
@@ -60,7 +62,8 @@ public class MainPresenter {
 				} catch (InterruptedException e) {
 				}
 			}
-		}).start();
+		});
+		simulationThread.start();
 	}
 
 	public void stopSimulation() {

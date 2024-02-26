@@ -11,7 +11,7 @@ public enum GameObjectTag {
 		this.type = type;
 	}
 
-	public GameObjectType getGameObjectType() {
+	public GameObjectType getType() {
 		return type;
 	}
 }

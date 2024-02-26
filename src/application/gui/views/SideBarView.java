@@ -46,15 +46,15 @@ public class SideBarView extends Pane {
 		}
 
 	}
-	
+
 	private static final double GAME_OBJECT_SIZE = 40;
-	
+
 	private SideBarPresenter sideBarPresenter;
 
 	private FlowPane gameObjects = new FlowPane();
-	
-	private Button startButton = new Button("Start"); 
-	
+
+	private Button startButton = new Button("Start");
+
 	public SideBarView(double witdh, double height) {
 		this.setPrefHeight(height);
 		this.setPrefWidth(witdh);
@@ -64,13 +64,23 @@ public class SideBarView extends Pane {
 		init();
 
 	}
-
+	
+	private boolean started = false; 
+	
 	private void init() {
 		initSelectableGameObjects();
-		startButton.setOnAction( event -> sideBarPresenter.startGame());
+		startButton.setOnAction(event -> {
+			if(!started) {
+			sideBarPresenter.startGame();
+			}
+			else
+			{
+				sideBarPresenter.stopGame();
+			}
+		});
 		getChildren().add(startButton);
 	}
-	
+
 	private void initSelectableGameObjects() {
 		GameObjectRepresentation obstacle = new GameObjectRepresentation(GameObjectTag.WALL, "Wall",
 				Settings.COLOR_OBSTACLE_WALL, GAME_OBJECT_SIZE);

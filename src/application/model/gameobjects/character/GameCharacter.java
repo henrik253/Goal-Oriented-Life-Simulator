@@ -2,6 +2,7 @@ package application.model.gameobjects.character;
 
 import java.util.List;
 
+import java.util.LinkedList;
 import application.model.GameField;
 import application.model.gameobjects.GameObject;
 import application.model.gameobjects.GameObjectTag;
@@ -44,11 +45,15 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 	private final GameField gameField = GameField.getGameField();
 
 	private final ActionHandler actionHandler = ActionHandler.getActionHandler();
-	
+
 	private PathPlaning pathPlaning = new DepthFirstSearch();
 
 	private List<Vector2D> path;
-	
+
+	private int currentPath = -1;
+
+	private Action currentAction = null;
+
 	public GameCharacter(Vector2D position) {
 		this.position = position;
 		updateOverallSatisfaction();
@@ -71,25 +76,45 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 
 	@Override
 	public void update() {
-		// Eigenen Plan erstellen 	
-		List<Action> actions = actionHandler.getAvailableActions();
-		// Take Action with highest Reward
-		Action action = CharacterSatisfaction.getHighestSatisfactionAndTimeAction(this, actions);
+		//TODO current Problem in Path planing is that 1. Characters block eatch other, and Actions block
+		// the path.
+		// Path is planned right, but then other Characters and Actions block the Path
 		
-		if(Vector2D.calcDistance(action.getPosition(), position) == 1) {
-			boolean finished = action.runAction();
-			if(finished) {
-				action.satisfyCharacter(this);
-				path = null;
+		// If no action get a new Action
+		if (currentAction == null) {
+			List<Action> actions = actionHandler.getAvailableActions();
+			currentAction = CharacterSatisfaction.getNextAction(this, actions);
+		}
+
+		// Check if Character is besides a Action, so he can do the Action or finish it
+		if (Vector2D.calcDistance(currentAction.getPosition(), position) == 1) {
+			boolean finished = currentAction.runAction();
+			if (finished) {
+				currentAction.satisfyCharacter(this);
+				currentPath = -1;
+				currentAction = null;
+				return;
 			}
 		}
-		
-		// Path Planing
-		if(path == null) {
-			path = pathPlaning.getPath(gameField.getField(),position,action.getPosition());
-			path.remove(0);
+
+		// if no current Path, get a new path;
+		if (currentPath == -1) {
+			try {
+				path = pathPlaning.getPath(gameField.getField(), position, currentAction.getPosition());
+				path.remove(0);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
 		}
-		moveTo(path.remove(0));
+
+		// Try to move along the path, if it fails no move on the path
+		Vector2D next = path.get(++currentPath);
+		boolean validMove = moveTo(next);
+
+		if (!validMove) {
+			currentPath--;
+		}
 	}
 
 	@Override
@@ -98,9 +123,13 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 	}
 
 	@Override
-	public void moveTo(final Vector2D position) {
-		
-		gameField.moveGameObject(this, position);
+	public boolean moveTo(final Vector2D position) {
+		try {
+			gameField.moveGameObject(this, position);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
