@@ -51,9 +51,13 @@ public class SideBarView extends Pane {
 
 	private SideBarPresenter sideBarPresenter;
 
+	private VBox wrapper = new VBox();
+
 	private FlowPane gameObjects = new FlowPane();
 
-	private Button startButton = new Button("Start");
+	private Button startStopButton = new Button("Start");
+
+	private boolean startPressed = false;
 
 	public SideBarView(double witdh, double height) {
 		this.setPrefHeight(height);
@@ -62,23 +66,23 @@ public class SideBarView extends Pane {
 		this.setId("SiderBarView");
 		gameObjects.setPrefWidth(getPrefWidth() - 20);
 		init();
-
+		getChildren().add(wrapper);
 	}
-	
-	private boolean started = false; 
-	
+
+	private boolean started = false;
+
 	private void init() {
 		initSelectableGameObjects();
-		startButton.setOnAction(event -> {
-			if(!started) {
-			sideBarPresenter.startGame();
-			}
-			else
-			{
+		startStopButton.setOnAction(event -> {
+			if (!this.startPressed) {
+				sideBarPresenter.startGame();
+				startPressed = true;
+			} else {
 				sideBarPresenter.stopGame();
+				startPressed = false;
 			}
 		});
-		getChildren().add(startButton);
+		wrapper.getChildren().add(startStopButton);
 	}
 
 	private void initSelectableGameObjects() {
@@ -110,7 +114,7 @@ public class SideBarView extends Pane {
 		gameObjects.getChildren().addAll(obstacle, character, actionEating, actionSleep, actionSpendMoney, actionStudy,
 				actionWork, actionMeeting);
 
-		getChildren().add(gameObjects);
+		wrapper.getChildren().add(gameObjects);
 	}
 
 	public SideBarPresenter getSideBarPresenter() {

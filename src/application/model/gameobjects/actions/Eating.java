@@ -5,15 +5,14 @@ import application.model.gameobjects.character.GameCharacter;
 import application.utils.Vector2D;
 
 public class Eating extends Action {
-
+	
+	public static int TIME = (int) (Math.random() * 5);
+	
 	public Eating(Vector2D position) {
 		super(position);
+		setTime(TIME);
 	}
 
-	@Override
-	public double getSatisfaction(GameCharacter gameCharacter) {
-		return 1.0;
-	}
 
 	@Override
 	public GameObjectTag getGameObjectTag() {

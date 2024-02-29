@@ -8,13 +8,13 @@ public class MainPresenter {
 	private SideBarPresenter siderBarPresenter;
 
 	private SimulationPresenter simulationPresenter;
-	
-	private static int tickRate = 100;
-	
+
+	private volatile int tickRate = 100;
+
 	private Model model;
 
-	private Thread simulationThread;
-	
+	public static Thread simulationThread;
+
 	public Model getModel() {
 		return model;
 	}
@@ -43,20 +43,25 @@ public class MainPresenter {
 		simulationPresenter.setGameObjectTag(tag);
 	}
 
-	public void setGameObjectMapInModel(GameObjectTag[][] gameObjectMap) {
-		model.setGameObjectMap(gameObjectMap);
+	public int getTickRate() {
+		return tickRate;
+	}
+
+	public void setTickRate(int tickRate) {
+		this.tickRate = tickRate;
 	}
 
 	public void startSimulation() {
-		setGameObjectMapInModel(simulationPresenter.getGameObjectMap());
+		model.setGameObjectMap(simulationPresenter.getGameObjectMap());
 		model.startGame();
-
+		
 		simulationThread = new Thread(() -> {
+			int count = 0; 
 			while (model.isRunning()) {
-			
-				model.update(); 
+				model.update();
+				System.out.println("Tick Count: " + (count++));
 				GameObjectTag[][] gameObjectMap = model.getField();
-				Platform.runLater( () -> simulationPresenter.drawSimulationGrid(gameObjectMap)); 
+				Platform.runLater(() -> simulationPresenter.drawSimulationGrid(gameObjectMap));
 				try {
 					Thread.sleep(tickRate);
 				} catch (InterruptedException e) {
@@ -68,5 +73,9 @@ public class MainPresenter {
 
 	public void stopSimulation() {
 		model.stopGame();
+	}
+
+	public void setGameObjectMapInModel(GameObjectTag[][] gameObjectMap) {
+		model.setGameObjectMap(gameObjectMap);
 	}
 }

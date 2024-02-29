@@ -13,7 +13,7 @@ import application.model.gameobjects.actions.ActionHandler;
 import application.model.pathplaning.*;
 import application.utils.Vector2D;
 
-public final class GameCharacter implements GameObject, Moveable, Startable {
+public final class GameCharacter implements GameObject, Moveable, Startable, Cloneable{
 	// Behaviour of the Model
 	// 1. Each Character has characteristics and needs => Overall Level
 	// 1.1 Social Interactions => Level of social satisfaction and relationships
@@ -50,8 +50,6 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 
 	private List<Vector2D> path;
 
-	private int currentPath = -1;
-
 	private Action currentAction = null;
 
 	public GameCharacter(Vector2D position) {
@@ -76,45 +74,59 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 
 	@Override
 	public void update() {
-		//TODO current Problem in Path planing is that 1. Characters block eatch other, and Actions block
+		// TODO current Problem in Path planing is that 1. Characters block eatch other,
+		// and Actions block
 		// the path.
 		// Path is planned right, but then other Characters and Actions block the Path
-		
+
 		// If no action get a new Action
 		if (currentAction == null) {
 			List<Action> actions = actionHandler.getAvailableActions();
-			currentAction = CharacterSatisfaction.getNextAction(this, actions);
+			try {
+				currentAction = CharacterSatisfaction.getNextAction(this, actions);
+				System.err.println("Next action " + currentAction + " for Character at " + position);
+			} catch (Exception e) {
+				return;
+			}
 		}
+		
+		
 
 		// Check if Character is besides a Action, so he can do the Action or finish it
 		if (Vector2D.calcDistance(currentAction.getPosition(), position) == 1) {
 			boolean finished = currentAction.runAction();
 			if (finished) {
 				currentAction.satisfyCharacter(this);
-				currentPath = -1;
 				currentAction = null;
+				path = null;
+				
+				System.err.println("Updated Character and Satisfactions");
+				System.err.println(toDetailedString());
+				
 				return;
 			}
 		}
 
 		// if no current Path, get a new path;
-		if (currentPath == -1) {
+		if (path == null) {
 			try {
 				path = pathPlaning.getPath(gameField.getField(), position, currentAction.getPosition());
 				path.remove(0);
 			} catch (Exception e) {
-				e.printStackTrace();
 				return;
 			}
 		}
 
-		// Try to move along the path, if it fails no move on the path
-		Vector2D next = path.get(++currentPath);
+		try {
+		Vector2D next = path.remove(0);
 		boolean validMove = moveTo(next);
-
-		if (!validMove) {
-			currentPath--;
+		path = validMove ? path : null;
 		}
+		catch(Exception e) {
+			return;
+		}
+		
+
 	}
 
 	@Override
@@ -135,6 +147,38 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 	@Override
 	public String toString() {
 		return "C"; // C for Character
+	}
+	
+	
+	public String toDetailedString() {
+	    return "GameCharacter{" +
+	            "overallSatisfaction=" + overallSatisfaction + "\n" +
+	            ", socialSatisfaction=" + socialSatisfaction +"\n" +
+	            ", socialWeight=" + socialWeight +"\n" +
+	            ", moneySatisfaction=" + moneySatisfaction +"\n" +
+	            ", moneyWeight=" + moneyWeight +"\n" +
+	            ", intellectuallySatisfaction=" + intellectuallySatisfaction +"\n" +
+	            ", intellectuallyWeight=" + intellectuallyWeight +"\n" +
+	            ", hungerSatisfaction=" + hungerSatisfaction +"\n" +
+	            ", hungerWeight=" + hungerWeight +"\n" +
+	            ", sleepSatisfaction=" + sleepSatisfaction +"\n" +
+	            ", sleepWeight=" + sleepWeight +"\n" +
+	            ", position=" + position +"\n" +
+	            ", path=" + (path != null ? pathToString() : "null") +"\n" +
+	            ", currentAction=" + (currentAction != null ? currentAction.toString() : "null") + "\n" +
+	            '}';
+	}
+
+	private String pathToString() {
+	    StringBuilder sb = new StringBuilder("[");
+	    for (int i = 0; i < path.size(); i++) {
+	        sb.append(path.get(i).toString());
+	        if (i < path.size() - 1) {
+	            sb.append(", ");
+	        }
+	    }
+	    sb.append("]");
+	    return sb.toString();
 	}
 
 	@Override
@@ -234,5 +278,29 @@ public final class GameCharacter implements GameObject, Moveable, Startable {
 	public void setPosition(Vector2D position) {
 		this.position = position;
 	}
+	
+	 @Override
+	    public GameCharacter clone() {
+	        try {
+	            GameCharacter cloned = (GameCharacter) super.clone();
+	            
+	            // Deep clone mutable objects
+	            cloned.position = new Vector2D(this.position.getX(), this.position.getY());
+	            if (this.path != null) {
+	                cloned.path = new LinkedList<>();
+	                for (Vector2D point : this.path) {
+	                    cloned.path.add(new Vector2D(point.getX(), point.getY()));
+	                }
+	            }
+	            
+	            // Note: gameField and actionHandler are shared among instances and not cloned
+	            // If PathPlaning is mutable and needs to be deep cloned, you should do it here
+	            // Assuming PathPlaning is either immutable or doesn't require deep cloning for this context
+	            
+	            return cloned;
+	        } catch (CloneNotSupportedException e) {
+	            throw new AssertionError(); // Can never happen
+	        }
+	    }
 
 }

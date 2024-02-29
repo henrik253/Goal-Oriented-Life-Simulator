@@ -19,7 +19,7 @@ public class Main extends Application
     private static final double SIDE_BAR_WIDTH = SCENE_WIDTH / 4,
                     SIDE_BAR_HEIGHT = SCENE_HEIGHT;
 
-    private static final int ROWS = 50, COLUMNS = 50;
+    private static final int ROWS = 30, COLUMNS = 30;
 
     private BorderPane root;
 
@@ -84,5 +84,9 @@ public class Main extends Application
     public static void main(String[] args)
     {
         launch(args);
+        try {
+        MainPresenter.simulationThread.interrupt();
+        }
+        catch(Exception e) {} // Terminating simulation Thread
     }
 }

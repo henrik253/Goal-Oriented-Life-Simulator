@@ -7,7 +7,17 @@ import application.model.gameobjects.GameObject;
 import application.model.gameobjects.GameObjectFactory;
 import application.model.gameobjects.GameObjectTag;
 import application.model.gameobjects.Startable;
+import application.model.gameobjects.character.GameCharacter;
 import application.utils.Vector2D;
+
+class GameCharacterOnPositionException extends Exception{
+
+	public GameCharacterOnPositionException(String string) {
+		super(string);
+	}
+	private static final long serialVersionUID = 1L;
+	
+}
 
 // Singleton
 public class GameField {
@@ -26,11 +36,15 @@ public class GameField {
 		return gameField;
 	}
 
-	public void moveGameObject(GameObject gameObject, final Vector2D position) {
+	public void moveGameObject(GameObject gameObject, final Vector2D position) throws GameCharacterOnPositionException {
 		final Vector2D pos = gameObject.getPosition();
 		
 		if(gameObject.getPosition().equals(position)) {
 			throw new IllegalArgumentException("gameObject already on " + position);
+		}
+		
+		if (field[position.getY()][position.getX()] instanceof GameCharacter) {
+			throw new GameCharacterOnPositionException("Already a GameCharacter on " + position);
 		}
 		
 		if (field[position.getY()][position.getX()] != null) {
@@ -77,13 +91,16 @@ public class GameField {
 		for (int row = 0; row < field.length; row++) {
 			for (int col = 0; col < field[row].length; col++) {
 				GameObjectTag gameObjectTag = gameObjectMap[row][col];
+				
 				if (gameObjectTag == null) {
 					continue;
 				}
 				GameObject gameObject = GameObjectFactory.createGameObject(gameObjectTag, new Vector2D(col, row));
+				
 				if(gameObject instanceof Startable) {
 					startables.add((Startable) gameObject);
 				}
+			
 				field[row][col] = gameObject;
 			}
 		}

@@ -6,13 +6,11 @@ import application.utils.Vector2D;
 
 public class Work extends Action {
 
+	public static int TIME = (int) (Math.random() * 10);
+	
 	public Work(Vector2D position) {
 		super(position);
-	}
-
-	@Override
-	public double getSatisfaction(GameCharacter gameCharacter) {
-		return 1.0;
+		setTime(TIME);
 	}
 
 	@Override

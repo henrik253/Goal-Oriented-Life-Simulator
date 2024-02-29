@@ -6,17 +6,15 @@ import application.utils.Vector2D;
 
 public class Study extends Action
 {
-
+	
+	public static int TIME = (int) (Math.random() * 8);
+	
     public Study(Vector2D position)
     {
         super(position);
+    	setTime(TIME);
     }
 
-    @Override
-    public double getSatisfaction(GameCharacter gameCharacter)
-    {
-        return 1.0;
-    }
 
 	@Override
 	public GameObjectTag getGameObjectTag() {
@@ -26,6 +24,6 @@ public class Study extends Action
 	
 	@Override
 	public void satisfyCharacter(GameCharacter gameCharacter) {
-		gameCharacter.setIntellectuallySatisfaction(gameCharacter.getIntellectuallySatisfaction() + getSatisfaction(gameCharacter));
+		gameCharacter.setIntellectuallySatisfaction(gameCharacter.getIntellectuallySatisfaction() + (getSatisfaction(gameCharacter) * gameCharacter.getIntellectuallyWeight()));
 	}
 }
