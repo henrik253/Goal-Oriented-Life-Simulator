@@ -59,7 +59,6 @@ public class MainPresenter {
 			int count = 0; 
 			while (model.isRunning()) {
 				model.update();
-				System.out.println("Tick Count: " + (count++));
 				GameObjectTag[][] gameObjectMap = model.getField();
 				Platform.runLater(() -> simulationPresenter.drawSimulationGrid(gameObjectMap));
 				try {
